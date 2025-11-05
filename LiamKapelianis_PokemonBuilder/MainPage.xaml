@@ -26,19 +26,23 @@
             <!--Pokemon Search bar -->
             <Grid Padding="7"
                   HeightRequest="60"
-                  ColumnDefinitions="*, Auto">
+                  ColumnDefinitions="*, Auto"
+                  RowDefinitions="*, Auto">
                   
                 <Entry x:Name="SearchBar"
                        Placeholder="Search Pokemon..." 
                        HorizontalOptions="FillAndExpand" 
                        Grid.Column="0"
+                       Grid.Row="0"
                 />
                 
                 <Button  x:Name="SearchBtn" 
                          Text="Search"
                          Clicked="SearchButton_Clicked"
-                         Grid.Column="1"/>
+                         Grid.Column="1"
+                         Grid.Row="0"/>
             </Grid>
+            
             
         </VerticalStackLayout>
     </ScrollView>
