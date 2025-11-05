@@ -42,8 +42,17 @@
                          Grid.Column="1"
                          Grid.Row="0"/>
             </Grid>
-            
-            
+
+            <Grid x:Name="PokeShowcase"
+                  Padding="7"
+                  HeightRequest="300"
+                  WidthRequest="300"
+                  BackgroundColor="Blue"
+                  ColumnDefinitions="*, Auto"
+                  RowDefinitions="*, Auto"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
 
