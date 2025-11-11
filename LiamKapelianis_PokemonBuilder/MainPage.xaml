@@ -1,58 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LiamKapelianis_PokemonBuilder.MainPage">
+             x:Class="LiamKapelianis_PokemonBuilder.MainPage"
+             Title="Pokemon Team Builder">
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+        <VerticalStackLayout Padding="30,0" Spacing="25">
 
-            <!-- example button code
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
-            -->
-
-            <!--Banner-->
+            <!--banner-->
             <Grid HeightRequest="100">
-                <BoxView Color="Red"
-                         HorizontalOptions="FillAndExpand" />
+                <BoxView Color="Red" HorizontalOptions="FillAndExpand"/>
             </Grid>
 
-            <!--Pokemon Search bar -->
-            <Grid Padding="7"
-                  HeightRequest="60"
-                  ColumnDefinitions="*, Auto"
-                  RowDefinitions="*, Auto">
-                  
+            <!--pokemon search bar -->
+            <Grid Padding="7" HeightRequest="60" ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
                 <Entry x:Name="SearchBar"
-                       Placeholder="Search Pokemon..." 
-                       HorizontalOptions="FillAndExpand" 
-                       Grid.Column="0"
-                       Grid.Row="0"
-                />
-                
-                <Button  x:Name="SearchBtn" 
-                         Text="Search"
-                         Clicked="SearchButton_Clicked"
-                         Grid.Column="1"
-                         Grid.Row="0"/>
+                       Placeholder="Search Pokemon..."
+                       HorizontalOptions="FillAndExpand"
+                       Grid.Column="0" Grid.Row="0"/>
+
+                <Button x:Name="SearchBtn"
+                        Text="Search"
+                        Clicked="SearchButton_Clicked"
+                        Grid.Column="1" Grid.Row="0"/>
             </Grid>
 
-            <Grid x:Name="PokeShowcase"
-                  Padding="7"
-                  HeightRequest="300"
-                  WidthRequest="300"
-                  BackgroundColor="Blue"
-                  ColumnDefinitions="*, Auto"
-                  RowDefinitions="*, Auto"
-                  HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand">
-            </Grid>
+            <!--pokemon Showcase-->
+            <Frame x:Name="PokeShowcaseFrame"
+                   CornerRadius="20"
+                   Padding="10"
+                   HasShadow="False"
+                   BackgroundColor="#3B4CCA"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="FillAndExpand">
+
+                <CollectionView x:Name="PokeShowcaseGrid"
+                                ItemsLayout="VerticalGrid, 3"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame HeightRequest="120" WidthRequest="120"
+                                   CornerRadius="15"
+                                   Margin="5"
+                                   HasShadow="False"
+                                   BackgroundColor="{Binding BackgroundColor}">
+                                <VerticalStackLayout HorizontalOptions="Center"
+                                                     VerticalOptions="Center">
+                                    <Image Source="{Binding Sprite}" HeightRequest="80" WidthRequest="80"/>
+                                    <Label Text="{Binding Name}" HorizontalOptions="Center" TextColor="White"/>
+                                </VerticalStackLayout>
+                                <!--passes the entire PokemonHolder for the tapped item-->
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference PokeShowcaseGrid}, Path=BindingContext.PokemonTappedCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+
         </VerticalStackLayout>
     </ScrollView>
 
