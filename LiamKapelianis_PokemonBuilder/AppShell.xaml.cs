@@ -8,5 +8,7 @@ public partial class AppShell : Shell
 
         // Register routes for navigation
         Routing.RegisterRoute("PokemonDetailPage", typeof(PokemonDetailPage));
+        Routing.RegisterRoute("TeamAnalysisPage", typeof(TeamAnalysisPage));
+        Routing.RegisterRoute("PokemonComparePage", typeof(PokemonComparePage));
     }
 }

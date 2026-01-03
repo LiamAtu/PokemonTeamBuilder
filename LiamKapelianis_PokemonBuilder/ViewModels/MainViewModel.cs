@@ -1,4 +1,5 @@
 ﻿using LiamKapelianis_PokemonBuilder.Models;
+using LiamKapelianis_PokemonBuilder.Services;
 using System.Collections.ObjectModel;
 using System.Net.Http.Json;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ public class MainViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 
     public ObservableCollection<Pokemon> PokemonList { get; } = new();
-    public ObservableCollection<Pokemon> MyTeam { get; } = new();
+    public ObservableCollection<Pokemon> MyTeam => TeamService.Instance.CurrentTeam;
     public ObservableCollection<TypeFilter> TypeFilters { get; } = new();
 
     public ICommand AddToTeamCommand { get; }
@@ -140,16 +141,15 @@ public class MainViewModel : INotifyPropertyChanged
         if (pokemon == null) return;
 
         // Check if already in team
-        if (MyTeam.Any(p => p.Name == pokemon.Name))
+        if (TeamService.Instance.IsInTeam(pokemon))
         {
             Application.Current?.MainPage?.DisplayAlert("Already Added", $"{pokemon.Name} is already in your team!", "OK");
             return;
         }
 
-        // Add to team if under 6
-        if (MyTeam.Count < 6)
+        // Try to add to team
+        if (TeamService.Instance.AddToTeam(pokemon))
         {
-            MyTeam.Add(pokemon);
             Application.Current?.MainPage?.DisplayAlert("Added!", $"{pokemon.Name} added to your team!", "OK");
         }
         else
@@ -162,7 +162,7 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (pokemon == null) return;
 
-        MyTeam.Remove(pokemon);
+        TeamService.Instance.RemoveFromTeam(pokemon);
     }
 
     private async void NavigateToDetail(Pokemon pokemon)

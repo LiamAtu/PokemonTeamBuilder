@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LiamKapelianis_PokemonBuilder.PokemonComparePage"
+             Title="Compare Pokemon">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="Compare Pokémon Stats" 
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <!-- Selection Area -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <!-- Pokemon 1 Selector -->
+                <Frame Grid.Column="0" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Pokémon 1" 
+                               FontSize="18" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+                        <Button Text="Select"
+                                Command="{Binding SelectPokemon1Command}"
+                                BackgroundColor="Blue"
+                                TextColor="White"/>
+                        <Frame IsVisible="{Binding HasPokemon1}"
+                               BackgroundColor="{Binding Pokemon1.BackgroundColor}"
+                               CornerRadius="10"
+                               Padding="10">
+                            <VerticalStackLayout Spacing="5">
+                                <Image Source="{Binding Pokemon1.Sprite}" 
+                                       HeightRequest="100" 
+                                       WidthRequest="100"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding Pokemon1.Name}" 
+                                       HorizontalOptions="Center"
+                                       TextColor="White"
+                                       FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Pokemon 2 Selector -->
+                <Frame Grid.Column="1" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Pokémon 2" 
+                               FontSize="18" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+                        <Button Text="Select"
+                                Command="{Binding SelectPokemon2Command}"
+                                BackgroundColor="Red"
+                                TextColor="White"/>
+                        <Frame IsVisible="{Binding HasPokemon2}"
+                               BackgroundColor="{Binding Pokemon2.BackgroundColor}"
+                               CornerRadius="10"
+                               Padding="10">
+                            <VerticalStackLayout Spacing="5">
+                                <Image Source="{Binding Pokemon2.Sprite}" 
+                                       HeightRequest="100" 
+                                       WidthRequest="100"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding Pokemon2.Name}" 
+                                       HorizontalOptions="Center"
+                                       TextColor="White"
+                                       FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Comparison Results -->
+            <Frame IsVisible="{Binding CanCompare}"
+                   CornerRadius="15" 
+                   HasShadow="False" 
+                   BorderColor="Gold">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Stat Comparison" 
+                           FontSize="20" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <!-- HP Comparison -->
+                    <Grid ColumnDefinitions="80,*,80" RowSpacing="15">
+                        <Label Text="HP" 
+                               Grid.Column="1" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats1.HP}" 
+                               Grid.Column="0" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding HPColor1}"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats2.HP}" 
+                               Grid.Column="2" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding HPColor2}"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ProgressBar Progress="{Binding HP1Progress}" 
+                                     ProgressColor="Blue" 
+                                     Grid.Column="0"/>
+                        <ProgressBar Progress="{Binding HP2Progress}" 
+                                     ProgressColor="Red" 
+                                     Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Attack Comparison -->
+                    <Grid ColumnDefinitions="80,*,80" RowSpacing="15">
+                        <Label Text="Attack" 
+                               Grid.Column="1" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats1.Attack}" 
+                               Grid.Column="0" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding AttackColor1}"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats2.Attack}" 
+                               Grid.Column="2" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding AttackColor2}"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ProgressBar Progress="{Binding Attack1Progress}" 
+                                     ProgressColor="Blue" 
+                                     Grid.Column="0"/>
+                        <ProgressBar Progress="{Binding Attack2Progress}" 
+                                     ProgressColor="Red" 
+                                     Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Defense Comparison -->
+                    <Grid ColumnDefinitions="80,*,80" RowSpacing="15">
+                        <Label Text="Defense" 
+                               Grid.Column="1" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats1.Defense}" 
+                               Grid.Column="0" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding DefenseColor1}"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats2.Defense}" 
+                               Grid.Column="2" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding DefenseColor2}"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ProgressBar Progress="{Binding Defense1Progress}" 
+                                     ProgressColor="Blue" 
+                                     Grid.Column="0"/>
+                        <ProgressBar Progress="{Binding Defense2Progress}" 
+                                     ProgressColor="Red" 
+                                     Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Speed Comparison -->
+                    <Grid ColumnDefinitions="80,*,80" RowSpacing="15">
+                        <Label Text="Speed" 
+                               Grid.Column="1" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats1.Speed}" 
+                               Grid.Column="0" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding SpeedColor1}"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Stats2.Speed}" 
+                               Grid.Column="2" 
+                               HorizontalOptions="Center"
+                               TextColor="{Binding SpeedColor2}"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ProgressBar Progress="{Binding Speed1Progress}" 
+                                     ProgressColor="Blue" 
+                                     Grid.Column="0"/>
+                        <ProgressBar Progress="{Binding Speed2Progress}" 
+                                     ProgressColor="Red" 
+                                     Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Total Stats -->
+                    <BoxView HeightRequest="1" Color="LightGray" Margin="0,10"/>
+                    <Grid ColumnDefinitions="80,*,80">
+                        <Label Text="Total" 
+                               Grid.Column="1" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="18"/>
+                        <Label Text="{Binding TotalStats1}" 
+                               Grid.Column="0" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="18"
+                               TextColor="Blue"/>
+                        <Label Text="{Binding TotalStats2}" 
+                               Grid.Column="2" 
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="18"
+                               TextColor="Red"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

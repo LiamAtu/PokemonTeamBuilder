@@ -11,13 +11,13 @@
             Title="Team Builder"
             ContentTemplate="{DataTemplate local:MainPage}" />
 
-       <!-- <ShellContent
-            Title="Saved Teams"
-            ContentTemplate="{DataTemplate local:SavedTeamsPage}" />
+        <ShellContent
+            Title="Team Analysis"
+            ContentTemplate="{DataTemplate local:TeamAnalysisPage}" />
 
         <ShellContent
-            Title="Settings"
-            ContentTemplate="{DataTemplate local:SettingsPage}" />-->
+            Title="Compare"
+            ContentTemplate="{DataTemplate local:PokemonComparePage}" />
     </TabBar>
 
 </Shell>

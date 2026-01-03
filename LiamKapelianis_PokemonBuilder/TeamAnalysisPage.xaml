@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LiamKapelianis_PokemonBuilder.TeamAnalysisPage"
+             Title="Team Analysis">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="Team Coverage Analysis" 
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <!-- Type Coverage Section -->
+            <Frame CornerRadius="15" HasShadow="True" BorderColor="Gold">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Type Coverage" 
+                           FontSize="20" 
+                           FontAttributes="Bold"/>
+
+                    <Label Text="{Binding CoverageDescription}"
+                           TextColor="Gray"
+                           FontSize="14"/>
+
+                    <!-- Offensive Coverage -->
+                    <Label Text="Offensive Coverage" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           Margin="0,10,0,0"/>
+                    <FlexLayout Wrap="Wrap" 
+                                JustifyContent="Start"
+                                BindableLayout.ItemsSource="{Binding OffensiveTypes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="8,4" 
+                                       Margin="4"
+                                       CornerRadius="10"
+                                       BackgroundColor="{Binding Color}"
+                                       HasShadow="False">
+                                    <Label Text="{Binding TypeName}" 
+                                           TextColor="White"
+                                           FontAttributes="Bold"
+                                           FontSize="12"/>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+
+                    <!-- Defensive Weaknesses -->
+                    <Label Text="Team Weaknesses" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           Margin="0,10,0,0"/>
+                    <CollectionView ItemsSource="{Binding Weaknesses}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="0,5" 
+                                       Padding="12"
+                                       BackgroundColor="LightCoral"
+                                       CornerRadius="10"
+                                       HasShadow="False">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding TypeName}" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"
+                                               Grid.Column="0"/>
+                                        <Label Text="{Binding Count, StringFormat='{0}x weak'}" 
+                                               FontSize="14"
+                                               TextColor="DarkRed"
+                                               VerticalOptions="Center"
+                                               Grid.Column="1"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Defensive Resistances -->
+                    <Label Text="Team Resistances" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           Margin="0,10,0,0"/>
+                    <CollectionView ItemsSource="{Binding Resistances}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="0,5" 
+                                       Padding="12"
+                                       BackgroundColor="LightGreen"
+                                       CornerRadius="10"
+                                       HasShadow="False">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding TypeName}" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"
+                                               Grid.Column="0"/>
+                                        <Label Text="{Binding Count, StringFormat='{0}x resist'}" 
+                                               FontSize="14"
+                                               TextColor="DarkGreen"
+                                               VerticalOptions="Center"
+                                               Grid.Column="1"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Suggestions -->
+            <Frame CornerRadius="15" HasShadow="False" BorderColor="LightBlue">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Suggestions" 
+                           FontSize="20" 
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Suggestions}"
+                           FontSize="14"
+                           TextColor="Gray"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Refresh Analysis"
+                    BackgroundColor="Blue"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Command="{Binding RefreshAnalysisCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
