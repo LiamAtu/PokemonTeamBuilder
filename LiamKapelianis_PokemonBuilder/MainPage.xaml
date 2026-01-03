@@ -3,65 +3,164 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LiamKapelianis_PokemonBuilder.MainPage"
              Title="Pokemon Team Builder">
-
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
-
-            <!--banner-->
+            <!-- Banner -->
             <Grid HeightRequest="100">
                 <BoxView Color="Red" HorizontalOptions="FillAndExpand"/>
             </Grid>
 
-            <!--pokemon search bar -->
-            <Grid Padding="7" HeightRequest="60" ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
-                <Entry x:Name="SearchBar"
-                       Placeholder="Search Pokemon..."
-                       HorizontalOptions="FillAndExpand"
-                       Grid.Column="0" Grid.Row="0"/>
+            <!-- My Team Panel -->
+            <Frame BorderColor="Gold" 
+                   HasShadow="True" 
+                   Padding="15"
+                   CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="My Team" 
+                           FontSize="20" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text="{Binding MyTeam.Count, StringFormat='{0}/6 Pokémon'}"
+                           HorizontalOptions="Center"
+                           TextColor="Gray"/>
 
-                <Button x:Name="SearchBtn"
-                        Text="Search"
-                        Clicked="SearchButton_Clicked"
-                        Grid.Column="1" Grid.Row="0"/>
-            </Grid>
-
-            <!--pokemon Showcase-->
-            <Frame x:Name="PokeShowcaseFrame"
-                   CornerRadius="20"
-                   Padding="10"
-                   HasShadow="False"
-                   BackgroundColor="#3B4CCA"
-                   HorizontalOptions="Fill"
-                   VerticalOptions="FillAndExpand">
-
-                <CollectionView x:Name="PokeShowcaseGrid"
-                                ItemsLayout="VerticalGrid, 3"
-                                VerticalOptions="FillAndExpand"
-                                HorizontalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame HeightRequest="120" WidthRequest="120"
-                                   CornerRadius="15"
-                                   Margin="5"
-                                   HasShadow="False"
-                                   BackgroundColor="{Binding BackgroundColor}">
-                                <VerticalStackLayout HorizontalOptions="Center"
-                                                     VerticalOptions="Center">
-                                    <Image Source="{Binding Sprite}" HeightRequest="80" WidthRequest="80"/>
-                                    <Label Text="{Binding Name}" HorizontalOptions="Center" TextColor="White"/>
-                                </VerticalStackLayout>
-                                <!--passes the entire PokemonHolder for the tapped item-->
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference PokeShowcaseGrid}, Path=BindingContext.PokemonTappedCommand}"
-                                                          CommandParameter="{Binding .}" />
-                                </Frame.GestureRecognizers>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    <CollectionView ItemsSource="{Binding MyTeam}"
+                                    HeightRequest="160">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame HeightRequest="140" 
+                                       WidthRequest="120"
+                                       CornerRadius="15"
+                                       HasShadow="False"
+                                       BackgroundColor="{Binding BackgroundColor}">
+                                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Image Source="{Binding Sprite}" 
+                                               HeightRequest="70" 
+                                               WidthRequest="70"/>
+                                        <Label Text="{Binding Name}" 
+                                               HorizontalOptions="Center" 
+                                               TextColor="White" 
+                                               FontAttributes="Bold"
+                                               FontSize="12"/>
+                                    </VerticalStackLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveFromTeamCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <Label Text="Tap Pokémon below to add to your team!"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="Gray"
+                                   Margin="0,50,0,0"/>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </VerticalStackLayout>
             </Frame>
 
+            <!-- Pokemon search bar -->
+            <Grid Padding="7" HeightRequest="60" ColumnDefinitions="*, Auto">
+                <Entry x:Name="SearchBar"
+                       Text="{Binding SearchText}"
+                       Placeholder="Search Pokemon..."
+                       HorizontalOptions="FillAndExpand"
+                       Grid.Column="0"/>
+                <Button x:Name="SearchBtn"
+                        Text="Search"
+                        Command="{Binding SearchCommand}"
+                        Grid.Column="1"/>
+            </Grid>
+
+            <!-- Type Filter Chips -->
+            <Frame Padding="10" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Filter by Type" 
+                           FontSize="16" 
+                           FontAttributes="Bold"/>
+                    <FlexLayout Wrap="Wrap" 
+                                JustifyContent="Start"
+                                AlignItems="Start"
+                                BindableLayout.ItemsSource="{Binding TypeFilters}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10,5" 
+                                       Margin="5"
+                                       CornerRadius="15"
+                                       HasShadow="False"
+                                       BackgroundColor="{Binding BackgroundColor}"
+                                       BorderColor="{Binding BorderColor}"
+                                       HeightRequest="35">
+                                    <Label Text="{Binding TypeName}" 
+                                           TextColor="{Binding TextColor}"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TypeFilterTappedCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Pokemon Showcase -->
+            <CollectionView x:Name="PokeShowcaseGrid"
+                ItemsSource="{Binding PokemonList}"
+                ItemsLayout="VerticalGrid, 3"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HeightRequest="160" 
+                   CornerRadius="15"
+                   Margin="3"
+                   HasShadow="False"
+                   BackgroundColor="{Binding BackgroundColor}"
+                   HorizontalOptions="FillAndExpand">
+                            <Grid>
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                                    <Image Source="{Binding Sprite}" HeightRequest="90" WidthRequest="90"/>
+                                    <Label Text="{Binding Name}" 
+                               HorizontalOptions="Center" 
+                               TextColor="White" 
+                               FontAttributes="Bold"
+                               FontSize="14"/>
+                                </VerticalStackLayout>
+
+                                <!-- Add to Team Button -->
+                                <Button Text="+" 
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            BackgroundColor="Green"
+                            TextColor="White"
+                            CornerRadius="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            Margin="5"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AddToTeamCommand}"
+                            CommandParameter="{Binding .}"/>
+
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToDetailCommand}"
+                                              CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

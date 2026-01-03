@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LiamKapelianis_PokemonBuilder.PokemonDetailPage"
+             Title="Pokémon Details">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Header Card -->
+            <Frame CornerRadius="20" 
+                   HasShadow="True"
+                   BackgroundColor="{Binding Pokemon.BackgroundColor}">
+                <VerticalStackLayout Spacing="15" Padding="20">
+                    <Image Source="{Binding Pokemon.Sprite}" 
+                           HeightRequest="200" 
+                           WidthRequest="200"
+                           HorizontalOptions="Center"/>
+                    <Label Text="{Binding Pokemon.Name}" 
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center"/>
+
+                    <!-- Types -->
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                        <BindableLayout.ItemsSource>
+                            <Binding Path="Pokemon.Types" />
+                        </BindableLayout.ItemsSource>
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10,5" 
+                                       CornerRadius="10"
+                                       BackgroundColor="White"
+                                       HasShadow="False">
+                                    <Label Text="{Binding .}" 
+                                           TextColor="Black"
+                                           FontAttributes="Bold"/>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Stats Section -->
+            <Frame CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Base Stats" 
+                           FontSize="20" 
+                           FontAttributes="Bold"/>
+
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" 
+                          ColumnDefinitions="120,*,50"
+                          RowSpacing="10">
+                        <!-- HP -->
+                        <Label Text="HP" Grid.Row="0" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding HPProgress}" 
+                                     ProgressColor="Red" 
+                                     Grid.Row="0" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.HP}" Grid.Row="0" Grid.Column="2" HorizontalOptions="End"/>
+
+                        <!-- Attack -->
+                        <Label Text="Attack" Grid.Row="1" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding AttackProgress}" 
+                                     ProgressColor="OrangeRed" 
+                                     Grid.Row="1" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.Attack}" Grid.Row="1" Grid.Column="2" HorizontalOptions="End"/>
+
+                        <!-- Defense -->
+                        <Label Text="Defense" Grid.Row="2" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding DefenseProgress}" 
+                                     ProgressColor="Orange" 
+                                     Grid.Row="2" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.Defense}" Grid.Row="2" Grid.Column="2" HorizontalOptions="End"/>
+
+                        <!-- Special Attack -->
+                        <Label Text="Sp. Attack" Grid.Row="3" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding SpAttackProgress}" 
+                                     ProgressColor="Blue" 
+                                     Grid.Row="3" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.SpecialAttack}" Grid.Row="3" Grid.Column="2" HorizontalOptions="End"/>
+
+                        <!-- Special Defense -->
+                        <Label Text="Sp. Defense" Grid.Row="4" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding SpDefenseProgress}" 
+                                     ProgressColor="Green" 
+                                     Grid.Row="4" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.SpecialDefense}" Grid.Row="4" Grid.Column="2" HorizontalOptions="End"/>
+
+                        <!-- Speed -->
+                        <Label Text="Speed" Grid.Row="5" Grid.Column="0" VerticalOptions="Center"/>
+                        <ProgressBar Progress="{Binding SpeedProgress}" 
+                                     ProgressColor="Yellow" 
+                                     Grid.Row="5" Grid.Column="1"
+                                     VerticalOptions="Center"/>
+                        <Label Text="{Binding Stats.Speed}" Grid.Row="5" Grid.Column="2" HorizontalOptions="End"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Abilities Section -->
+            <Frame CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Abilities" 
+                           FontSize="20" 
+                           FontAttributes="Bold"/>
+                    <CollectionView ItemsSource="{Binding Abilities}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="0,5" 
+                                       Padding="15"
+                                       BackgroundColor="LightGray"
+                                       CornerRadius="10"
+                                       HasShadow="False">
+                                    <Label Text="{Binding .}" 
+                                           FontSize="16"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Action Buttons -->
+            <Button Text="Add to Team" 
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Command="{Binding AddToTeamCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

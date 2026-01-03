@@ -1,10 +1,12 @@
-﻿namespace LiamKapelianis_PokemonBuilder
+﻿namespace LiamKapelianis_PokemonBuilder;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+        // Register routes for navigation
+        Routing.RegisterRoute("PokemonDetailPage", typeof(PokemonDetailPage));
     }
 }
