@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LiamKapelianis_PokemonBuilder.SettingsPage"
+             Title="Settings">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="Settings" 
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <!-- Team Management Section -->
+            <Frame Padding="15" CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Team Management" 
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+
+                    <Grid ColumnDefinitions="*,Auto" RowSpacing="15">
+                        <Label Text="Active Team:" 
+                               VerticalOptions="Center"
+                               Grid.Row="0" Grid.Column="0"/>
+                        <Picker x:Name="TeamPicker"
+                                SelectedIndex="{Binding ActiveTeamIndex}"
+                                Grid.Row="0" Grid.Column="1"
+                                WidthRequest="120">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Team 1</x:String>
+                                    <x:String>Team 2</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Grid>
+
+                    <Label Text="{Binding ActiveTeamInfo}"
+                           TextColor="Gray"
+                           FontSize="14"/>
+
+                    <Button Text="Clear Current Team"
+                            BackgroundColor="Orange"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Command="{Binding ClearCurrentTeamCommand}"/>
+
+                    <Button Text="Clear Both Teams"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Command="{Binding ClearAllTeamsCommand}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Appearance Section -->
+            <Frame Padding="15" CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Appearance" 
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+
+                    <Grid ColumnDefinitions="*,Auto" RowSpacing="15">
+                        <Label Text="Dark Mode" 
+                               VerticalOptions="Center"
+                               Grid.Row="0" Grid.Column="0"/>
+                        <Switch IsToggled="{Binding IsDarkMode}"
+                                Grid.Row="0" Grid.Column="1"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Cache Section -->
+            <Frame Padding="15" CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Cache and Data" 
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+
+                    <Label Text="Clear cached Pokemon data to free up space or refresh data."
+                           TextColor="Gray"
+                           FontSize="14"/>
+
+                    <Button Text="Clear Cache"
+                            BackgroundColor="Purple"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Command="{Binding ClearCacheCommand}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Pokemon Data Section -->
+            <Frame Padding="15" CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Pokemon Database" 
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+
+                    <Grid ColumnDefinitions="*,Auto" RowSpacing="15">
+                        <Label Text="Max Pokemon to Load:" 
+                               VerticalOptions="Center"
+                               Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="{Binding MaxPokemonCount}"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               Grid.Row="0" Grid.Column="1"/>
+                    </Grid>
+
+                    <Slider Minimum="50" 
+                            Maximum="500" 
+                            Value="{Binding MaxPokemonCount}"
+                            MinimumTrackColor="Red"
+                            MaximumTrackColor="LightGray"/>
+
+                    <Label Text="Higher numbers may take longer to load."
+                           TextColor="Gray"
+                           FontSize="12"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- About Section -->
+            <Frame Padding="15" CornerRadius="15" HasShadow="False" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="About" 
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+                    <Label Text="Pokemon Team Builder"
+                           FontSize="16"/>
+                    <Label Text="Version 1.0.0"
+                           TextColor="Gray"/>
+                    <Label Text="Made with .NET MAUI"
+                           TextColor="Gray"/>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

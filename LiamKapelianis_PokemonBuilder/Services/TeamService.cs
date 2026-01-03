@@ -10,21 +10,40 @@ public class TeamService
 
     private TeamService() { }
 
-    public ObservableCollection<Pokemon> CurrentTeam { get; } = new();
+    // Two teams
+    public ObservableCollection<Pokemon> Team1 { get; } = new();
+    public ObservableCollection<Pokemon> Team2 { get; } = new();
+
+    private int _activeTeamNumber = 1;
+    public int ActiveTeamNumber
+    {
+        get => _activeTeamNumber;
+        set
+        {
+            _activeTeamNumber = value;
+            ActiveTeamChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    // Returns the currently active team
+    public ObservableCollection<Pokemon> CurrentTeam => ActiveTeamNumber == 1 ? Team1 : Team2;
 
     public event EventHandler TeamChanged;
+    public event EventHandler ActiveTeamChanged;
 
     public bool AddToTeam(Pokemon pokemon)
     {
         if (pokemon == null) return false;
 
-        if (CurrentTeam.Any(p => p.Name == pokemon.Name))
+        var team = CurrentTeam;
+
+        if (team.Any(p => p.Name == pokemon.Name))
             return false;
 
-        if (CurrentTeam.Count >= 6)
+        if (team.Count >= 6)
             return false;
 
-        CurrentTeam.Add(pokemon);
+        team.Add(pokemon);
         TeamChanged?.Invoke(this, EventArgs.Empty);
         return true;
     }
@@ -33,10 +52,11 @@ public class TeamService
     {
         if (pokemon == null) return;
 
-        var toRemove = CurrentTeam.FirstOrDefault(p => p.Name == pokemon.Name);
+        var team = CurrentTeam;
+        var toRemove = team.FirstOrDefault(p => p.Name == pokemon.Name);
         if (toRemove != null)
         {
-            CurrentTeam.Remove(toRemove);
+            team.Remove(toRemove);
             TeamChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -46,14 +66,26 @@ public class TeamService
         return pokemon != null && CurrentTeam.Any(p => p.Name == pokemon.Name);
     }
 
-    public void ClearTeam()
+    public void ClearCurrentTeam()
     {
         CurrentTeam.Clear();
+        TeamChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ClearAllTeams()
+    {
+        Team1.Clear();
+        Team2.Clear();
         TeamChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public List<Pokemon> GetTeamCopy()
     {
         return new List<Pokemon>(CurrentTeam);
+    }
+
+    public string GetActiveTeamName()
+    {
+        return ActiveTeamNumber == 1 ? "Team 1" : "Team 2";
     }
 }

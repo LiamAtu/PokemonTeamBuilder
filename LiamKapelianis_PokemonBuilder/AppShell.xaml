@@ -18,6 +18,10 @@
         <ShellContent
             Title="Compare"
             ContentTemplate="{DataTemplate local:PokemonComparePage}" />
+
+        <ShellContent
+            Title="Settings"
+            ContentTemplate="{DataTemplate local:SettingsPage}" />
     </TabBar>
 
 </Shell>

@@ -16,13 +16,17 @@
                    Padding="15"
                    CornerRadius="10">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="My Team" 
-                           FontSize="20" 
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"/>
-                    <Label Text="{Binding MyTeam.Count, StringFormat='{0}/6 Pokémon'}"
-                           HorizontalOptions="Center"
-                           TextColor="Gray"/>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{Binding ActiveTeamName}" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               Grid.Column="0"/>
+                        <Label Text="{Binding MyTeam.Count, StringFormat='{0}/6'}"
+                               FontSize="16"
+                               TextColor="Gray"
+                               VerticalOptions="Center"
+                               Grid.Column="1"/>
+                    </Grid>
 
                     <CollectionView ItemsSource="{Binding MyTeam}"
                                     HeightRequest="160">
@@ -54,7 +58,7 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                         <CollectionView.EmptyView>
-                            <Label Text="Tap Pokémon below to add to your team!"
+                            <Label Text="Tap + button to add Pokemon to your team!"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
                                    TextColor="Gray"
@@ -114,47 +118,47 @@
 
             <!-- Pokemon Showcase -->
             <CollectionView x:Name="PokeShowcaseGrid"
-                ItemsSource="{Binding PokemonList}"
-                ItemsLayout="VerticalGrid, 3"
-                VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
-                SelectionMode="None">
+                            ItemsSource="{Binding PokemonList}"
+                            ItemsLayout="VerticalGrid, 3"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame HeightRequest="160" 
-                   CornerRadius="15"
-                   Margin="3"
-                   HasShadow="False"
-                   BackgroundColor="{Binding BackgroundColor}"
-                   HorizontalOptions="FillAndExpand">
+                               CornerRadius="15"
+                               Margin="3"
+                               HasShadow="False"
+                               BackgroundColor="{Binding BackgroundColor}"
+                               HorizontalOptions="FillAndExpand">
                             <Grid>
                                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
                                     <Image Source="{Binding Sprite}" HeightRequest="90" WidthRequest="90"/>
                                     <Label Text="{Binding Name}" 
-                               HorizontalOptions="Center" 
-                               TextColor="White" 
-                               FontAttributes="Bold"
-                               FontSize="14"/>
+                                           HorizontalOptions="Center" 
+                                           TextColor="White" 
+                                           FontAttributes="Bold"
+                                           FontSize="14"/>
                                 </VerticalStackLayout>
 
                                 <!-- Add to Team Button -->
                                 <Button Text="+" 
-                            FontSize="24"
-                            FontAttributes="Bold"
-                            BackgroundColor="Green"
-                            TextColor="White"
-                            CornerRadius="20"
-                            WidthRequest="40"
-                            HeightRequest="40"
-                            HorizontalOptions="End"
-                            VerticalOptions="Start"
-                            Margin="5"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AddToTeamCommand}"
-                            CommandParameter="{Binding .}"/>
+                                        FontSize="24"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Green"
+                                        TextColor="White"
+                                        CornerRadius="20"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="5"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AddToTeamCommand}"
+                                        CommandParameter="{Binding .}"/>
 
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToDetailCommand}"
-                                              CommandParameter="{Binding .}" />
+                                                          CommandParameter="{Binding .}" />
                                 </Grid.GestureRecognizers>
                             </Grid>
                         </Frame>

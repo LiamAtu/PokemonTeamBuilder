@@ -26,7 +26,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand NavigateToDetailCommand { get; }
     public ICommand SearchCommand { get; }
     public ICommand TypeFilterTappedCommand { get; }
-
+  
     public string SearchText
     {
         get => _searchText;
@@ -45,10 +45,18 @@ public class MainViewModel : INotifyPropertyChanged
         NavigateToDetailCommand = new Command<Pokemon>(NavigateToDetail);
         SearchCommand = new Command(OnSearch);
         TypeFilterTappedCommand = new Command<TypeFilter>(OnTypeFilterTapped);
+        // Subscribe to team changes to update UI
+        TeamService.Instance.TeamChanged += (s, e) => OnPropertyChanged(nameof(MyTeam));
+        TeamService.Instance.ActiveTeamChanged += (s, e) => OnPropertyChanged(nameof(ActiveTeamName));
+        // Subscribe to team changes to update UI
+        TeamService.Instance.TeamChanged += (s, e) => OnPropertyChanged(nameof(MyTeam));
+        TeamService.Instance.ActiveTeamChanged += (s, e) => OnPropertyChanged(nameof(ActiveTeamName));
 
         InitializeTypeFilters();
         _ = LoadPokemonAsync();
     }
+
+    public string ActiveTeamName => TeamService.Instance.GetActiveTeamName();
 
     private void InitializeTypeFilters()
     {
@@ -216,7 +224,7 @@ public class MainViewModel : INotifyPropertyChanged
 public class TypeFilter : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-
+    public string ActiveTeamName => TeamService.Instance.GetActiveTeamName();
     private bool _isSelected;
 
     public string TypeName { get; set; }
