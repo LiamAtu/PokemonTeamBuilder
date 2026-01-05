@@ -6,6 +6,10 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        // Load saved theme preference
+        bool isDarkMode = Preferences.Get("dark_mode", false);
+        UserAppTheme = isDarkMode ? AppTheme.Dark : AppTheme.Light;
+
         MainPage = new AppShell();
     }
 }

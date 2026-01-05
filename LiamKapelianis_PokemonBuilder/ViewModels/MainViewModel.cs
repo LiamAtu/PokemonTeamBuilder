@@ -14,6 +14,7 @@ public class MainViewModel : INotifyPropertyChanged
     private static readonly HttpClient _httpClient = new();
     private string _searchText;
     private List<Pokemon> _allPokemon = new();
+    private bool _isLoading;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,7 +27,19 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand NavigateToDetailCommand { get; }
     public ICommand SearchCommand { get; }
     public ICommand TypeFilterTappedCommand { get; }
-  
+
+    public string ActiveTeamName => TeamService.Instance.GetActiveTeamName();
+
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set
+        {
+            _isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+        }
+    }
+
     public string SearchText
     {
         get => _searchText;
@@ -45,18 +58,25 @@ public class MainViewModel : INotifyPropertyChanged
         NavigateToDetailCommand = new Command<Pokemon>(NavigateToDetail);
         SearchCommand = new Command(OnSearch);
         TypeFilterTappedCommand = new Command<TypeFilter>(OnTypeFilterTapped);
+
         // Subscribe to team changes to update UI
         TeamService.Instance.TeamChanged += (s, e) => OnPropertyChanged(nameof(MyTeam));
         TeamService.Instance.ActiveTeamChanged += (s, e) => OnPropertyChanged(nameof(ActiveTeamName));
-        // Subscribe to team changes to update UI
-        TeamService.Instance.TeamChanged += (s, e) => OnPropertyChanged(nameof(MyTeam));
-        TeamService.Instance.ActiveTeamChanged += (s, e) => OnPropertyChanged(nameof(ActiveTeamName));
+
+        // Subscribe to settings changes
+        MessagingCenter.Subscribe<SettingsViewModel>(this, "ReloadPokemon", (sender) =>
+        {
+            _ = ReloadPokemonAsync();
+        });
+
+        MessagingCenter.Subscribe<SettingsViewModel>(this, "ClearCache", (sender) =>
+        {
+            ClearCacheAndReload();
+        });
 
         InitializeTypeFilters();
         _ = LoadPokemonAsync();
     }
-
-    public string ActiveTeamName => TeamService.Instance.GetActiveTeamName();
 
     private void InitializeTypeFilters()
     {
@@ -111,7 +131,14 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async Task LoadPokemonAsync()
     {
-        var tasks = Enumerable.Range(1, 200).Select(async i =>
+        if (IsLoading) return;
+
+        IsLoading = true;
+
+        // Get max count from settings
+        int maxCount = Preferences.Get("max_pokemon", 200);
+
+        var tasks = Enumerable.Range(1, maxCount).Select(async i =>
         {
             try
             {
@@ -126,6 +153,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         var results = (await Task.WhenAll(tasks)).Where(r => r != null);
 
+        _allPokemon.Clear();
         foreach (var p in results)
         {
             var firstType = p.types?.FirstOrDefault()?.type?.name ?? "normal";
@@ -140,29 +168,43 @@ public class MainViewModel : INotifyPropertyChanged
             };
 
             _allPokemon.Add(pokemon);
-            PokemonList.Add(pokemon);
         }
+
+        ApplyFilters();
+        IsLoading = false;
+    }
+
+    public async Task ReloadPokemonAsync()
+    {
+        _allPokemon.Clear();
+        PokemonList.Clear();
+        await LoadPokemonAsync();
+    }
+
+    private void ClearCacheAndReload()
+    {
+        _allPokemon.Clear();
+        PokemonList.Clear();
+        _ = LoadPokemonAsync();
     }
 
     private void AddToTeam(Pokemon pokemon)
     {
         if (pokemon == null) return;
 
-        // Check if already in team
         if (TeamService.Instance.IsInTeam(pokemon))
         {
             Application.Current?.MainPage?.DisplayAlert("Already Added", $"{pokemon.Name} is already in your team!", "OK");
             return;
         }
 
-        // Try to add to team
         if (TeamService.Instance.AddToTeam(pokemon))
         {
             Application.Current?.MainPage?.DisplayAlert("Added!", $"{pokemon.Name} added to your team!", "OK");
         }
         else
         {
-            Application.Current?.MainPage?.DisplayAlert("Team Full", "You can only have 6 Pokémon in your team!", "OK");
+            Application.Current?.MainPage?.DisplayAlert("Team Full", "You can only have 6 Pokemon in your team!", "OK");
         }
     }
 
@@ -177,7 +219,6 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (pokemon == null) return;
 
-        // Pass the pokemon object directly as a navigation parameter
         await Shell.Current.GoToAsync($"PokemonDetailPage",
             new Dictionary<string, object>
             {
@@ -224,7 +265,7 @@ public class MainViewModel : INotifyPropertyChanged
 public class TypeFilter : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    public string ActiveTeamName => TeamService.Instance.GetActiveTeamName();
+
     private bool _isSelected;
 
     public string TypeName { get; set; }

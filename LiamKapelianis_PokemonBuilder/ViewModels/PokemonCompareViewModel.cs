@@ -107,8 +107,8 @@ public class PokemonCompareViewModel : INotifyPropertyChanged
     private async void SelectPokemon1()
     {
         string pokemonName = await Application.Current.MainPage.DisplayPromptAsync(
-            "Select Pokémon",
-            "Enter Pokémon name:",
+            "Select Pokemon",
+            "Enter Pokemon name:",
             "OK",
             "Cancel",
             placeholder: "e.g., Pikachu"
@@ -123,8 +123,8 @@ public class PokemonCompareViewModel : INotifyPropertyChanged
     private async void SelectPokemon2()
     {
         string pokemonName = await Application.Current.MainPage.DisplayPromptAsync(
-            "Select Pokémon",
-            "Enter Pokémon name:",
+            "Select Pokemon",
+            "Enter Pokemon name:",
             "OK",
             "Cancel",
             placeholder: "e.g., Charizard"
@@ -156,7 +156,7 @@ public class PokemonCompareViewModel : INotifyPropertyChanged
         }
         catch
         {
-            await Application.Current.MainPage.DisplayAlert("Error", $"Could not find Pokémon '{name}'", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", $"Could not find Pokemon '{name}'", "OK");
         }
     }
 
@@ -180,7 +180,7 @@ public class PokemonCompareViewModel : INotifyPropertyChanged
         }
         catch
         {
-            await Application.Current.MainPage.DisplayAlert("Error", $"Could not find Pokémon '{name}'", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", $"Could not find Pokemon '{name}'", "OK");
         }
     }
 

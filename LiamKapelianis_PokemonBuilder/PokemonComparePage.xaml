@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LiamKapelianis_PokemonBuilder.PokemonComparePage"
-             Title="Compare Pokemon">
+             Title="Compare Pokemon"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
             <Label Text="Compare Pokemon Stats" 

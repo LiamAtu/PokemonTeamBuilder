@@ -2,13 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LiamKapelianis_PokemonBuilder.MainPage"
-             Title="Pokemon Team Builder">
+             Title="Pokemon Team Builder"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
-            <!-- Banner -->
-            <Grid HeightRequest="100">
-                <BoxView Color="Red" HorizontalOptions="FillAndExpand"/>
-            </Grid>
 
             <!-- My Team Panel -->
             <Frame BorderColor="Gold" 
@@ -80,6 +77,17 @@
                         Command="{Binding SearchCommand}"
                         Grid.Column="1"/>
             </Grid>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               Color="Red"
+                               HeightRequest="50"/>
+
+            <Label Text="Loading Pokemon..."
+                   IsVisible="{Binding IsLoading}"
+                   HorizontalOptions="Center"
+                   TextColor="Gray"/>
 
             <!-- Type Filter Chips -->
             <Frame Padding="10" HasShadow="False" BorderColor="LightGray">
